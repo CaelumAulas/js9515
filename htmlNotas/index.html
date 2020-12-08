@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caelum | Cadastro de Alunos e Notas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    
+    <div class="container p-3">
+        <h1 class="display-4">Caelum | Cadastro de Alunos e Notas</h1>
+        <hr>
+        <form method="POST">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" class="form-control" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" class="form-control" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" class="form-control" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="serie">Série:</label>
+                    <input type="text" id="serie" class="form-control" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="n1">Nota 1:</label>
+                    <input type="number" id="n1" class="form-control" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="n1">Nota 2:</label>
+                    <input type="number" id="n2" class="form-control" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="n1">Nota 3:</label>
+                    <input type="number" id="n3" class="form-control" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="n1">Nota 4:</label>
+                    <input type="number" id="n4" class="form-control" />
+                </div>
+                <div class="form-group col-md-12">
+                    <button class="btn btn-primary">
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <table class="table table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Série</th>
+                    <th>Notas</th>
+                    <th>Média Final</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Adriano</td>
+                    <td>adriano@teste.com.br</td>
+                    <td>(11) 5252-8989</td>
+                    <td>5ª A</td>
+                    <td>5.5 / 8.0 / 7.5 / 6.5</td>
+                    <td>7.9</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
