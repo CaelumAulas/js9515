@@ -15,14 +15,22 @@ export default function Tabela(props)
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Adriano</td>
-                    <td>adriano@teste.com.br</td>
-                    <td>(11) 5252-8989</td>
-                    <td>5ª A</td>
-                    <td>5.5 / 8.0 / 7.5 / 6.5</td>
-                    <td>7.9</td>
-                </tr>
+                {
+                    listaAlunos.map((aluno, index) => {
+                        let media = (aluno.n1 + aluno.n2 + aluno.n3 + aluno.n4) / 4;
+                        return (
+                            <tr key={index}>
+                                <td>{aluno.nome}</td>
+                                <td>{aluno.email}</td>
+                                <td>{aluno.telefone}</td>
+                                <td>{aluno.serie}</td>
+                                <td>{aluno.n1} / {aluno.n2} / {aluno.n3} / {aluno.n4}</td>
+                                <td>{media.toFixed(1)}</td>
+                            </tr>
+                        )
+                    })
+                }
+                
             </tbody>
         </table>
     );
