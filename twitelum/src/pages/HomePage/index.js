@@ -15,12 +15,35 @@ class HomePage extends Component {
       }
   }
 
-  adicionarTweet = (event) => {
+  async componentDidMount() {
+        const token = localStorage.getItem('TOKEN');
+        const resposta = await fetch(`https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${token}`);
+        const tweets = await resposta.json();
+        this.setState({
+            tweets
+        });
+  }
+
+  adicionarTweet = async (event) => {
     event.preventDefault();
-    if (this.state.novoTweet.length > 0) {
+
+    if (this.state.novoTweet.length > 0) 
+    {
+        const token = localStorage.getItem('TOKEN');
+        const resposta = await fetch(`https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${token}`, {
+            method: 'POST',
+            headers: {
+                'Content-type' : 'application/json'
+            },
+            body: JSON.stringify({ conteudo: this.state.novoTweet })
+        });
+
+        const tweetServidor = await resposta.json();
+        console.log(tweetServidor);
+
         this.setState({
             novoTweet: '',
-            tweets: [this.state.novoTweet, ...this.state.tweets]
+            tweets: [tweetServidor, ...this.state.tweets]
         });
     }
   }
@@ -41,7 +64,11 @@ class HomePage extends Component {
       if (hasTweets) 
       {
           const listaTweets = this.state.tweets.map((tweet, index) => {
-              return <Tweet key={index} texto={tweet} />
+              return <Tweet 
+                        key={index} 
+                        texto={tweet.conteudo}
+                        usuario={tweet.usuario}
+                    />
           });
 
           return listaTweets;
