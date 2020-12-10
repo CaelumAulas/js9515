@@ -1,6 +1,6 @@
 import MasterPage from "../../components/MasterPage/index.js";
 
-export default function HomePage()
+export default function HomePage(props)
 {
     return (
         <MasterPage>
