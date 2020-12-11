@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import Helmet from 'react-helmet'
 import Cabecalho from '../../components/Cabecalho'
 import Widget from '../../components/Widget'
 
@@ -49,6 +50,9 @@ class LoginPage extends Component {
     render() {
         return (
             <Fragment>
+                <Helmet>
+                    <title>Twitelum - Login</title>
+                </Helmet>
                 <Cabecalho />
                 <div className="loginPage">
                     <div className="container">
