@@ -3,7 +3,7 @@ import MasterPage from "../../components/MasterPage/index.js";
 export default function HomePage(props)
 {
     return (
-        <MasterPage>
+        <MasterPage title="Home">
             <section className="card">
                 <header className="card-header p-3">
                     <h2>Bem-vindo(a) à nossa concessionária!</h2>

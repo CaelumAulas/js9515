@@ -4,7 +4,7 @@ import MasterPage from "../../components/MasterPage/index.js";
 export default function NotFoundPage()
 {
     return (
-        <MasterPage>
+        <MasterPage title="Página não encontrada">
             <section className="card">
                 <header className="card-header p-3">
                     <h2>Página não encontrada | Erro 404</h2>

@@ -4,7 +4,7 @@ import MasterPage from "../../components/MasterPage/index.js";
 export default function ListagemPage()
 {
     return (
-        <MasterPage>
+        <MasterPage title="Nossos Veículos">
             <section>
                 <header className="card-header p-3 mb-3">
                     <h2>Veja os nossos veículos</h2>

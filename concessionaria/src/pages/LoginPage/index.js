@@ -7,24 +7,42 @@ export default function LoginPage(props)
 
     const renderMsg = _ => state.msg && <div className="alert alert-danger">{state.msg}</div>
 
-    const loginHandler = (event) => {
+    const loginHandler = async (event) => {
         event.preventDefault();
         const { usuario, senha } = event.target;
 
-        if (usuario.value === 'caelum' && senha.value === 'js46') {
-            localStorage.setItem('logado', 'true');
+        // FormData não se deve especificar headers na requisição de envio
+        const dados = new FormData();
+        dados.append('usuario', usuario.value);
+        dados.append('senha', senha.value);
+
+        try 
+        {
+            let urlPost = 'https://api-concessionaria.herokuapp.com/login.php';
+            const resposta = await fetch(urlPost, {
+                method: 'POST',
+                body: dados
+            });
+
+            const dadosServidor = await resposta.json();
+            if (dadosServidor.status === 0) {
+                alert(dadosServidor.message);
+                return;
+            }
+
+            setState({ msg: '' });
+            localStorage.setItem('logado', dadosServidor.token);
             props.history.push('/cadastro');
-            setState({ msg: '' })
         }
-        else {
-            event.target.reset();
-            usuario.focus();
-            setState({ msg: 'Login inválido!' })
+        catch(e)
+        {
+            alert('Erro ao realizar login!');
+            console.error(e);
         }
     }
 
     return (
-        <MasterPage>
+        <MasterPage title="Login">
             <section className="card">
                 <header className="card-header p-3">
                     <h2>Acesso Restrito</h2>

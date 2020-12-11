@@ -1,0 +1,12 @@
+URL de Cadastro da API: https://api-concessionaria.herokuapp.com/cadastrar-veiculo.php
+Método: POST
+Envio de Dados: FormData
+Campos:
+    marca
+    modelo
+    ano
+    cor 
+    preco 
+    foto 
+    descricao
+    token

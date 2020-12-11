@@ -3,7 +3,7 @@ import MasterPage from "../../components/MasterPage/index.js";
 export default function SobrePage()
 {
     return (
-        <MasterPage>
+        <MasterPage title="Sobre a Empresa">
             <section className="card">
                 <header className="card-header p-3">
                     <h2>Sobre nós</h2>
