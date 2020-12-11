@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import MasterPage from "../../components/MasterPage/index.js";
 
 export default function ListagemPage()
 {
+    useEffect(() => {
+        // buscar os dados no servidor
+        // jogar a lista no estado do componente
+    });
+
     return (
         <MasterPage title="Nossos Veículos">
             <section>
