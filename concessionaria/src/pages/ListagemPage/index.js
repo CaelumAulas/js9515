@@ -16,8 +16,15 @@ export default function ListagemPage()
 
     const exclusaoHandler = (idVeiculo) => {
         // excluir o veículo indicado no estado da aplicação
+        const listaFiltrada = listaVeiculos.filter(v => v.id !== idVeiculo);
+        setState(listaFiltrada);
     }
     
+    /**
+     * componentDidMount: se especificado um array de dependências vazio
+     * componentDidUpdate: se nenhum array for especificado ou um array com variáveis que indicam quando o evento deve ser disparado
+     * componentWillUnmount: se especificada uma função de retorno dentro do callback de useEffect
+     */
     useEffect(() => {
         carregarVeiculos();
     }, []);

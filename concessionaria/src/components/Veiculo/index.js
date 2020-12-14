@@ -3,10 +3,24 @@ import formatar from "../../lib/FormataMoeda.js";
 
 export default function Veiculo(props)
 {
-    const removerVeiculoHandler = (event) => {
+    const removerVeiculoHandler = async (event) => {
         // excluir o veículo no back-end
+        const token = localStorage.getItem('logado');
+        const id = props.id;
 
-        props.exclusaoCallback(/* id do veículo */);
+        const params = new URLSearchParams();
+        params.append('token', token);
+        params.append('id', id);
+
+        let urlDelete = 'https://api-concessionaria.herokuapp.com/excluir-veiculo.php?' + params;
+        const resposta = await fetch(urlDelete, { method: 'DELETE' });
+        const dadosExclusao = await resposta.json();
+        console.log(dadosExclusao);
+
+        if (dadosExclusao.status === 1) {
+            props.exclusaoCallback(id);
+            alert(dadosExclusao.message);
+        }
     }
 
     return(
