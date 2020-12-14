@@ -1,13 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MasterPage from "../../components/MasterPage/index.js";
 
 export default function ListagemPage()
 {
+    const [listaVeiculos, setState] = useState([]);
+
+    const carregarVeiculos = async () => {
+        // busca todos os veículos na API
+        // e joga os objetos retornados na lista do state do componente
+    }
+    
     useEffect(() => {
-        // buscar os dados no servidor
-        // jogar a lista no estado do componente
-    });
+        carregarVeiculos();
+    }, []);
 
     return (
         <MasterPage title="Nossos Veículos">
@@ -15,6 +21,7 @@ export default function ListagemPage()
                 <header className="card-header p-3 mb-3">
                     <h2>Veja os nossos veículos</h2>
                 </header>
+                
                 <div className="card p-2 my-3">
                     <div className="row">
                         <div className="col-md-3">

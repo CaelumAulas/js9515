@@ -3,13 +3,37 @@ import { validarFormulario } from "../../lib/ValidacaoForm.js";
 
 export default function CadastroPage()
 {
-    const cadastroHandler = (event) => {
+    const cadastroHandler = async (event) => {
         event.preventDefault();
         const campos = Array.from(event.target.elements).filter(campo => campo.name !== '');
         
-        if (validarFormulario(campos))
+        try 
         {
-            // envia as informações pro servidor
+            if (validarFormulario(campos))
+            {
+                const token = localStorage.getItem('logado');
+                const dadosCadastro = new FormData(event.target);
+                dadosCadastro.append('token', token);
+
+                const resposta = await fetch('https://api-concessionaria.herokuapp.com/cadastrar-veiculo.php', {
+                    method: 'POST',
+                    body: dadosCadastro
+                });
+                const dadosServidor = await resposta.json();
+
+                if (dadosServidor.status === 0) {
+                    alert(dadosServidor.message);
+                    return;
+                }
+
+                alert('Dados cadstrados com sucesso!');
+                event.target.reset();
+            }
+        }
+        catch(e)
+        {
+            alert('Erro ao enviar dados para cadastro do veículo!');
+            console.error(e);
         }
     }
 

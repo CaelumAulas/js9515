@@ -12,7 +12,7 @@ export default function LoginPage(props)
         const { usuario, senha } = event.target;
 
         // FormData não se deve especificar headers na requisição de envio
-        const dados = new FormData();
+        const dados = new FormData(event.target);
         dados.append('usuario', usuario.value);
         dados.append('senha', senha.value);
 

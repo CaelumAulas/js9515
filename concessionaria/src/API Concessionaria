@@ -10,3 +10,9 @@ Campos:
     foto 
     descricao
     token
+
+=====================================================================================
+
+URL de Veículos da API: https://api-concessionaria.herokuapp.com/listar-veiculos.php
+Método: GET
+Retorno: Array de Objetos com dados do Veículo
