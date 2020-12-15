@@ -28,3 +28,12 @@ Query String:
     ?id=ID&token=TOKEN
 
 Retorno: Objeto com informações de exclusão
+
+=====================================================================================
+
+URL de Veículos da API: https://api-concessionaria.herokuapp.com/get-veiculo.php
+Método: GET
+Query String:
+    id = ID do veículo
+
+Retorno: Objeto com dados do Veículo

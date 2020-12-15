@@ -1,8 +1,14 @@
+import { useRef } from "react";
 import MasterPage from "../../components/MasterPage/index.js";
 import { validarFormulario } from "../../lib/ValidacaoForm.js";
 
-export default function EditarPage()
+export default function EditarPage(props)
 {
+    const formEditar = useRef();
+    
+    const params = new URLSearchParams(props.location.search);
+    console.log('id:', params.get('id'));
+
     const editarHandler = (event) => {
         event.preventDefault();
         const campos = Array.from(event.target.elements).filter(campo => campo.name !== '');
@@ -15,7 +21,7 @@ export default function EditarPage()
 
     return (
         <MasterPage title="Editar Veículo">
-            <form onSubmit={editarHandler} id="formVeiculo" method="POST" className="row">
+            <form onSubmit={editarHandler} ref={formEditar} id="formVeiculo" method="POST" className="row">
                 <div className="form-group col-md-6">
                     <label>Marca:</label>
                     <select name="marca" className="form-control custom-select">
