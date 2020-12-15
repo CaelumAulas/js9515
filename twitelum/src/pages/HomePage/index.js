@@ -49,6 +49,13 @@ class HomePage extends Component {
     }
   }
 
+  removerTweet = (idTweet) => {
+    const listaAtualizada = this.state.tweets.filter(t => t._id !== idTweet);
+    this.setState({
+        tweets: listaAtualizada
+    });
+  }
+
   textoTweetChange = (event) => {
     let textoTweet = event.target.value;
     this.setState({
@@ -65,10 +72,11 @@ class HomePage extends Component {
       if (hasTweets) 
       {
           const listaTweets = this.state.tweets.map((tweet, index) => {
+              console.log(tweet);
               return <Tweet 
                         key={index} 
-                        texto={tweet.conteudo}
-                        usuario={tweet.usuario}
+                        { ...tweet }
+                        removerTweetCallback={this.removerTweet}
                     />
           });
 

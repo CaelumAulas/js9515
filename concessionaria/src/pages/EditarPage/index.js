@@ -8,13 +8,29 @@ export default function EditarPage(props)
     const params = new URLSearchParams(props.location.search);
     const id = params.get('id');
 
-    const editarHandler = (event) => {
+    const editarHandler = async (event) => {
         event.preventDefault();
         const campos = Array.from(event.target.elements).filter(campo => campo.name !== '');
 
         if (validarFormulario(campos))
         {
-            // envia as informações pro servidor
+            const token = localStorage.getItem('logado');
+            const dadosAtualizacao = new FormData(event.target);
+            dadosAtualizacao.append('token', token);
+            dadosAtualizacao.append('id', id);
+
+            const resposta = await fetch('https://api-concessionaria.herokuapp.com/atualizar-veiculo.php', {
+                method: 'POST',
+                body: dadosAtualizacao
+            });
+            const dadosServidor = await resposta.json();
+
+            if (dadosServidor.status === 0) {
+                alert(dadosServidor.message);
+                return;
+            }
+
+            alert('Dados atualizados com sucesso!');
         }
     }
 
