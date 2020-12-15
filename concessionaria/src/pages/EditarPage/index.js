@@ -1,13 +1,12 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import MasterPage from "../../components/MasterPage/index.js";
 import { validarFormulario } from "../../lib/ValidacaoForm.js";
 
 export default function EditarPage(props)
 {
     const formEditar = useRef();
-    
     const params = new URLSearchParams(props.location.search);
-    console.log('id:', params.get('id'));
+    const id = params.get('id');
 
     const editarHandler = (event) => {
         event.preventDefault();
@@ -19,12 +18,29 @@ export default function EditarPage(props)
         }
     }
 
+    async function carregarVeiculo()
+    {
+        const resposta = await fetch(`https://api-concessionaria.herokuapp.com/get-veiculo.php?id=${id}`);
+        const dadosVeiculo = await resposta.json();
+
+        for (let p in dadosVeiculo)
+        {
+            if (formEditar.current.elements[p]) {
+                formEditar.current.elements[p].value = dadosVeiculo[p];
+            }
+        }
+    }
+
+    useEffect(() => {
+        carregarVeiculo(id);
+    }, []);
+
     return (
         <MasterPage title="Editar Veículo">
             <form onSubmit={editarHandler} ref={formEditar} id="formVeiculo" method="POST" className="row">
                 <div className="form-group col-md-6">
                     <label>Marca:</label>
-                    <select name="marca" className="form-control custom-select">
+                    <select name="marca" className="form-control custom-select" data-msg="Marca é obrigatório!">
                         <option value="">-- Selecionar --</option>
                         <option value="Chevrolet">Chevrolet</option>
                         <option value="Ford">Ford</option>
@@ -34,26 +50,26 @@ export default function EditarPage(props)
                 </div>
                 <div className="form-group col-md-6">
                     <label>Modelo:</label>
-                    <input type="text" name="modelo" className="form-control" value="" placeholder="Insira o nome do modelo" />
+                    <input type="text" name="modelo" data-msg="Modelo inválido!" className="form-control" placeholder="Insira o nome do modelo" />
                     <div className="alert-danger w-100 p-2 d-none">Modelo inválido</div>
                 </div>
                 <div className="form-group col-md-6">
                     <label>Ano:</label>
-                    <input type="number" name="ano" className="form-control" value="" placeholder="Insira o ano do modelo" />
+                    <input type="number" name="ano" data-msg="Ano inválido!" className="form-control" placeholder="Insira o ano do modelo" />
                     <div className="alert-danger w-100 p-2 d-none">Ano inválido</div>
                 </div>
                 <div className="form-group col-md-6">
                     <label>Preço:</label>
-                    <input type="text" name="preco" className="form-control" value="" placeholder="Insira o preço do modelo" />
+                    <input type="text" name="preco" data-msg="Preço inválido!" className="form-control" placeholder="Insira o preço do modelo" />
                     <div className="alert-danger w-100 p-2 d-none">Preço inválido</div>
                 </div>
                 <div className="form-group col-md-6">
                     <label>Foto:</label>
-                    <input type="text" name="foto" className="form-control" value="" placeholder="Insira o nome da foto" />
+                    <input type="text" name="foto" className="form-control" placeholder="Insira o nome da foto" />
                 </div>
                 <div className="form-group col-md-6">
                     <label>Cor:</label>
-                    <select name="cor" className="form-control custom-select">
+                    <select name="cor" data-msg="Cor é obrigatório!" className="form-control custom-select">
                         <option value="">-- Selecionar --</option>
                         <option value="Preto">Preto</option>
                         <option value="Branco">Branco</option>
@@ -64,7 +80,7 @@ export default function EditarPage(props)
                 </div>
                 <div className="form-group col-md-12">
                     <label>Descrição:</label>
-                    <textarea className="form-control" name="descricao" rows="10" placeholder="Insira a descrição do veículo"></textarea>
+                    <textarea className="form-control" data-msg="Descrição é obrigatório!" name="descricao" rows="10" placeholder="Insira a descrição do veículo"></textarea>
                     <div className="alert-danger w-100 p-2 d-none">Descrição é obrigatório</div>
                 </div>
                 <div className="form-group col-md-12 text-right">

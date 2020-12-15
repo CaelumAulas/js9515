@@ -37,3 +37,19 @@ Query String:
     id = ID do veículo
 
 Retorno: Objeto com dados do Veículo
+
+=====================================================================================
+
+URL de Veículos da API: https://api-concessionaria.herokuapp.com/atualizar-veiculo.php
+Método: POST
+Envio de Dados: FormData
+Campos:
+    marca
+    modelo
+    ano
+    cor 
+    preco 
+    foto 
+    descricao
+    token
+    id
