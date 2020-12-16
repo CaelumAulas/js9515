@@ -1,25 +1,28 @@
 import { Link } from "react-router-dom";
 import formatar from "../../lib/FormataMoeda.js";
+import LoginService from "../../services/LoginService.js";
+import VeiculosService from "../../services/VeiculosService.js";
 
 export default function Veiculo(props)
 {
     const removerVeiculoHandler = async (event) => {
         // excluir o veículo no back-end
-        const token = localStorage.getItem('logado');
-        const id = props.id;
+        try 
+        {
+            const token = LoginService.getToken();
+            const id = props.id;
+            const dadosExclusao = await VeiculosService.remover(id, token);
+            console.log(dadosExclusao);
 
-        const params = new URLSearchParams();
-        params.append('token', token);
-        params.append('id', id);
-
-        let urlDelete = 'https://api-concessionaria.herokuapp.com/excluir-veiculo.php?' + params;
-        const resposta = await fetch(urlDelete, { method: 'DELETE' });
-        const dadosExclusao = await resposta.json();
-        console.log(dadosExclusao);
-
-        if (dadosExclusao.status === 1) {
-            props.exclusaoCallback(id);
-            alert(dadosExclusao.message);
+            if (dadosExclusao.status === 1) {
+                props.exclusaoCallback(id);
+                alert(dadosExclusao.message);
+            }
+        }
+        catch(e)
+        {
+            alert(e.message);
+            console.error(e);
         }
     }
 

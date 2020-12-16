@@ -1,42 +1,25 @@
 import { useState } from "react";
 import MasterPage from "../../components/MasterPage/index.js";
+import LoginService from "../../services/LoginService.js";
 
 export default function LoginPage(props)
 {
     const [state, setState] = useState({ msg: '' });
-
     const renderMsg = _ => state.msg && <div className="alert alert-danger">{state.msg}</div>
 
     const loginHandler = async (event) => {
         event.preventDefault();
         const { usuario, senha } = event.target;
 
-        // FormData não se deve especificar headers na requisição de envio
-        const dados = new FormData(event.target);
-        dados.append('usuario', usuario.value);
-        dados.append('senha', senha.value);
-
         try 
         {
-            let urlPost = 'https://api-concessionaria.herokuapp.com/login.php';
-            const resposta = await fetch(urlPost, {
-                method: 'POST',
-                body: dados
-            });
-
-            const dadosServidor = await resposta.json();
-            if (dadosServidor.status === 0) {
-                alert(dadosServidor.message);
-                return;
-            }
-
+            await LoginService.login(usuario.value, senha.value);
             setState({ msg: '' });
-            localStorage.setItem('logado', dadosServidor.token);
             props.history.push('/cadastro');
         }
         catch(e)
         {
-            alert('Erro ao realizar login!');
+            setState({ msg: e.message });
             console.error(e);
         }
     }

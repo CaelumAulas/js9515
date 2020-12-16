@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import MasterPage from "../../components/MasterPage/index.js";
 import { validarFormulario } from "../../lib/ValidacaoForm.js";
+import LoginService from "../../services/LoginService.js";
+import VeiculosService from "../../services/VeiculosService.js";
 
 export default function EditarPage(props)
 {
@@ -12,32 +14,29 @@ export default function EditarPage(props)
         event.preventDefault();
         const campos = Array.from(event.target.elements).filter(campo => campo.name !== '');
 
-        if (validarFormulario(campos))
+        try
         {
-            const token = localStorage.getItem('logado');
-            const dadosAtualizacao = new FormData(event.target);
-            dadosAtualizacao.append('token', token);
-            dadosAtualizacao.append('id', id);
+            if (validarFormulario(campos))
+            {
+                const token = LoginService.getToken();
+                const dadosAtualizacao = new FormData(event.target);
+                dadosAtualizacao.append('token', token);
+                dadosAtualizacao.append('id', id);
 
-            const resposta = await fetch('https://api-concessionaria.herokuapp.com/atualizar-veiculo.php', {
-                method: 'POST',
-                body: dadosAtualizacao
-            });
-            const dadosServidor = await resposta.json();
-
-            if (dadosServidor.status === 0) {
-                alert(dadosServidor.message);
-                return;
+                await VeiculosService.atualizar(dadosAtualizacao);
+                alert('Dados atualizados com sucesso!');
             }
-
-            alert('Dados atualizados com sucesso!');
+        }
+        catch(e) 
+        {
+            alert(e.message);
+            console.error(e);
         }
     }
 
     async function carregarVeiculo()
     {
-        const resposta = await fetch(`https://api-concessionaria.herokuapp.com/get-veiculo.php?id=${id}`);
-        const dadosVeiculo = await resposta.json();
+        const dadosVeiculo = await VeiculosService.getVeiculo(id);
 
         for (let p in dadosVeiculo)
         {

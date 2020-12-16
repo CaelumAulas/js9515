@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MasterPage from "../../components/MasterPage/index.js";
 import Veiculo from "../../components/Veiculo/index.js";
+import VeiculosService from "../../services/VeiculosService.js";
 
 export default function ListagemPage()
 {
@@ -9,8 +10,7 @@ export default function ListagemPage()
     const carregarVeiculos = async () => {
         // busca todos os veículos na API
         // e joga os objetos retornados na lista do state do componente
-        const resposta = await fetch('https://api-concessionaria.herokuapp.com/listar-veiculos.php');
-        const listaDeVeiculosServidor = await resposta.json();
+        const listaDeVeiculosServidor = await VeiculosService.listar();
         setState(listaDeVeiculosServidor);
     }
 
