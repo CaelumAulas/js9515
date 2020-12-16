@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Helmet from 'react-helmet'
 import Cabecalho from '../../components/Cabecalho'
 import Widget from '../../components/Widget'
+import LoginService from '../../services/LoginService.js'
 
 import './loginPage.css'
 
@@ -14,29 +15,12 @@ class LoginPage extends Component {
 
     fazerLogin = async (event) => {
         event.preventDefault();
-
-        const infoUsuario = {
-            login: this.inputLogin.current.value,
-            senha: this.inputSenha.current.value
-        }
+        let login = this.inputLogin.current.value;
+        let senha = this.inputSenha.current.value;
 
         try 
         {
-            const resposta = await fetch('http://twitelum-api.herokuapp.com/login', {
-                method: 'POST',
-                headers: {
-                    'Content-type' : 'application/json'
-                },
-                body: JSON.stringify(infoUsuario)
-            });
-
-            if (!resposta.ok) {
-                throw new Error(resposta.status);
-            }
-
-            const dadosServidor = await resposta.json();
-            const token = dadosServidor.token;
-            localStorage.setItem('TOKEN', token);
+            await LoginService.login(login, senha);
             // Redirecionamentos via código no React Router DOM
             this.props.history.push('/');
         }

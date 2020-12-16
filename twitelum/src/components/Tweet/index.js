@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './tweet.css'
 import PropTypes from 'prop-types';
+import TweetService from '../../services/TweetService.js';
 
 class Tweet extends Component {
     static defaultProps = {
@@ -16,12 +17,9 @@ class Tweet extends Component {
     }
 
     removeHandler = async () => {
-        const token = localStorage.getItem('TOKEN');
-        let tweetId = this.props._id;
-        const resposta = await fetch(`http://twitelum-api.herokuapp.com/tweets/${tweetId}?X-AUTH-TOKEN=${token}`, { method: 'DELETE' });
-        const dadosServer = await resposta.json();
+        const dadosServer = await TweetService.removerTweet(this.props._id);
         console.log(dadosServer);
-        this.props.removerTweetCallback(tweetId);
+        this.props.removerTweetCallback(this.props._id);
     }
 
     likeHandler = async () => {
@@ -36,12 +34,7 @@ class Tweet extends Component {
             totalLikes
         });
 
-        const token = localStorage.getItem('TOKEN');
-        const resposta = await fetch(`http://twitelum-api.herokuapp.com/tweets/${tweetId}/like?X-AUTH-TOKEN=${token}`, {
-            method: 'POST'
-        });
-
-        const dadosServer = await resposta.json();
+        const dadosServer = await TweetService.like(tweetId);
         console.log(dadosServer);
     }
 

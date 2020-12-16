@@ -6,13 +6,16 @@ import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
 import Helmet from 'react-helmet';
+import TweetService from '../../services/TweetService.js';
+import LoginService from '../../services/LoginService.js';
 
 class HomePage extends Component {
   constructor() {
       super();
       this.state = {
           novoTweet: '',
-          tweets: []
+          tweets: [],
+          usuario: LoginService.getUsuario()
       }
   }
 
@@ -23,9 +26,7 @@ class HomePage extends Component {
             });
         });
 
-        const token = localStorage.getItem('TOKEN');
-        const resposta = await fetch(`https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${token}`);
-        const tweets = await resposta.json();
+        const tweets = await TweetService.carregarTweets();
         window.store.dispatch({ type: 'CARREGA_TWEETS', tweets });
   }
 
@@ -34,18 +35,7 @@ class HomePage extends Component {
 
     if (this.state.novoTweet.length > 0) 
     {
-        const token = localStorage.getItem('TOKEN');
-        const resposta = await fetch(`https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${token}`, {
-            method: 'POST',
-            headers: {
-                'Content-type' : 'application/json'
-            },
-            body: JSON.stringify({ conteudo: this.state.novoTweet })
-        });
-
-        const tweetServidor = await resposta.json();
-        console.log(tweetServidor);
-
+        const tweetServidor = await TweetService.adicionarTweet(this.state.novoTweet);
         this.setState({
             novoTweet: '',
             tweets: [tweetServidor, ...this.state.tweets]
@@ -96,7 +86,7 @@ class HomePage extends Component {
             <title>Twitelum - Home ({`${this.state.tweets.length}`})</title>
         </Helmet>
         <Cabecalho>
-            <NavMenu usuario="@omariosouto" />
+            <NavMenu usuario={`@${this.state.usuario}`} />
         </Cabecalho>
         <div className="container">
             <Dashboard>
