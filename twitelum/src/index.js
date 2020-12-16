@@ -10,6 +10,9 @@ import "./assets/css/iconHeart.css";
 import "./assets/css/notificacao.css";
 import "./assets/css/novoTweet.css";
 
+// store
+import './store';
+
 // Roteamento
 import { BrowserRouter } from "react-router-dom";
 import Routing from "./routes.js";

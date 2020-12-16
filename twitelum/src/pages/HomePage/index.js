@@ -17,12 +17,16 @@ class HomePage extends Component {
   }
 
   async componentDidMount() {
+        window.store.subscribe(() => {
+            this.setState({
+                tweets: window.store.getState()
+            });
+        });
+
         const token = localStorage.getItem('TOKEN');
         const resposta = await fetch(`https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${token}`);
         const tweets = await resposta.json();
-        this.setState({
-            tweets
-        });
+        window.store.dispatch({ type: 'CARREGA_TWEETS', tweets });
   }
 
   adicionarTweet = async (event) => {
@@ -72,7 +76,6 @@ class HomePage extends Component {
       if (hasTweets) 
       {
           const listaTweets = this.state.tweets.map((tweet, index) => {
-              console.log(tweet);
               return <Tweet 
                         key={index} 
                         { ...tweet }
