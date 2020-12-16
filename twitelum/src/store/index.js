@@ -1,12 +1,13 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { tweetsReducer } from './tweets/index.js';
 
-const store = createStore(function(state = [], action = {}) {
+const store = createStore(
+    combineReducers({
+        // todos os reducers que devem ser monitorados pelo redux
+        tweets: tweetsReducer
+    }),
+    applyMiddleware(thunkMiddleware)
+);
 
-    if (action.type === 'CARREGA_TWEETS') {
-        return action.tweets;
-    }
-
-    return state;
-});
-
-window.store = store;
+export default store;
