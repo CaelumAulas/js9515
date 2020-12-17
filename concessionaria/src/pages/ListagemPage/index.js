@@ -21,8 +21,15 @@ export default function ListagemPage()
             setState(store.getState().veiculos.lista);
         });
 
-        // disparar a ação de carregamento das informações
-        store.dispatch(VeiculosThunkActions.carregaVeiculos())
+        // se não tem nada no state ainda...
+        if (store.getState().veiculos.lista.length === 0) {
+            // buscamos as informações no servidor para popular o state com os dados
+            store.dispatch(VeiculosThunkActions.carregaVeiculos());
+        }
+        else {
+            console.log('Carregando a lista que já está no state...');
+            setState(store.getState().veiculos.lista);
+        }
 
         // componentWillUnmount
         return () => {

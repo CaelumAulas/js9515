@@ -31,6 +31,7 @@ export class VeiculosThunkActions
     static carregaVeiculos()
     {
         return async function(dispatch) {
+            console.log('Carregando dados do servidor...');
             const listaDeVeiculosServidor = await VeiculosService.listar();
             dispatch({ type: 'CARREGA_VEICULOS', payload: { lista: listaDeVeiculosServidor }});
         }
