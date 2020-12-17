@@ -1,18 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ReactReduxContext } from "react-redux";
 import MasterPage from "../../components/MasterPage/index.js";
 import Veiculo from "../../components/Veiculo/index.js";
-import VeiculosService from "../../services/VeiculosService.js";
+import { VeiculosThunkActions } from "../../store/veiculos/index.js";
 
 export default function ListagemPage()
 {
+    const { store } = useContext(ReactReduxContext);
     const [listaVeiculos, setState] = useState([]);
-
-    const carregarVeiculos = async () => {
-        // busca todos os veículos na API
-        // e joga os objetos retornados na lista do state do componente
-        const listaDeVeiculosServidor = await VeiculosService.listar();
-        setState(listaDeVeiculosServidor);
-    }
 
     const exclusaoHandler = (idVeiculo) => {
         // excluir o veículo indicado no estado da aplicação
@@ -26,7 +21,15 @@ export default function ListagemPage()
      * componentWillUnmount: se especificada uma função de retorno dentro do callback de useEffect
      */
     useEffect(() => {
-        carregarVeiculos();
+        
+        // me inscrever no store do redux
+        store.subscribe(() => {
+            setState(store.getState().veiculos.lista);
+        });
+
+        // disparar a ação de carregamento das informações
+        store.dispatch(VeiculosThunkActions.carregaVeiculos());
+
     }, []);
 
     return (
