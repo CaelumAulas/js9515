@@ -2,10 +2,15 @@ import React, { Component } from 'react'
 import './tweet.css'
 import PropTypes from 'prop-types';
 import TweetService from '../../services/TweetService.js';
+import { ReactReduxContext } from 'react-redux';
+import { TweetsThunkActions } from '../../store/tweets/index.js';
 
 class Tweet extends Component {
+    static contextType = ReactReduxContext;
+
     static defaultProps = {
-        likeado: false
+        likeado: false,
+        totalLikes: 0
     }
 
     constructor(props) {
@@ -17,9 +22,7 @@ class Tweet extends Component {
     }
 
     removeHandler = async () => {
-        const dadosServer = await TweetService.removerTweet(this.props._id);
-        console.log(dadosServer);
-        this.props.removerTweetCallback(this.props._id);
+        this.context.store.dispatch(TweetsThunkActions.removeTweet(this.props._id));
     }
 
     likeHandler = async () => {
