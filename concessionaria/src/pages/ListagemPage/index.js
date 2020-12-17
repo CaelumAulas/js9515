@@ -21,6 +21,7 @@ export default function ListagemPage()
             setState(store.getState().veiculos.lista);
         }
     }
+    
     /**
      * componentDidMount: se especificado um array de dependências vazio
      * componentDidUpdate: se nenhum array for especificado ou um array com variáveis que indicam quando o evento deve ser disparado
