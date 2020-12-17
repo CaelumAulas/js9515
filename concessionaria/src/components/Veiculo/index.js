@@ -1,23 +1,21 @@
+import { useContext } from "react";
+import { ReactReduxContext } from "react-redux";
 import { Link } from "react-router-dom";
 import formatar from "../../lib/FormataMoeda.js";
 import LoginService from "../../services/LoginService.js";
-import VeiculosService from "../../services/VeiculosService.js";
+import { VeiculosThunkActions } from "../../store/veiculos/index.js";
 
 export default function Veiculo(props)
 {
+    const { store } = useContext(ReactReduxContext);
+
     const removerVeiculoHandler = async (event) => {
         // excluir o veículo no back-end
         try 
         {
             const token = LoginService.getToken();
             const id = props.id;
-            const dadosExclusao = await VeiculosService.remover(id, token);
-            console.log(dadosExclusao);
-
-            if (dadosExclusao.status === 1) {
-                props.exclusaoCallback(id);
-                alert(dadosExclusao.message);
-            }
+            store.dispatch(VeiculosThunkActions.removeVeiculo(id, token));
         }
         catch(e)
         {

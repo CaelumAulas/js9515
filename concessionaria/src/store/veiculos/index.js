@@ -14,6 +14,13 @@ export function veiculosReducer(state = INITIAL_STATE, action = {})
             lista: veiculos
         }
     }
+    else if (action.type === 'REMOVE_VEICULO') {
+        const veiculoId = action.payload.veiculoId;
+        const listaFiltrada = state.lista.filter(v => v.id !== veiculoId);
+        return {
+            lista: listaFiltrada
+        }
+    }
 
     return state;
 }
@@ -34,9 +41,13 @@ export class VeiculosThunkActions
 
     }
 
-    static removeVeiculo()
+    static removeVeiculo(id, token)
     {
-
+        return async function(dispatch) {
+            const dadosExclusao = await VeiculosService.remover(id, token);
+            console.log(dadosExclusao);
+            dispatch({ type: 'REMOVE_VEICULO', payload: { veiculoId: id } });
+        }
     }
 
     static atualizaVeiculo()

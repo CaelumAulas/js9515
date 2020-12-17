@@ -8,12 +8,6 @@ export default function ListagemPage()
 {
     const { store } = useContext(ReactReduxContext);
     const [listaVeiculos, setState] = useState([]);
-
-    const exclusaoHandler = (idVeiculo) => {
-        // excluir o veículo indicado no estado da aplicação
-        const listaFiltrada = listaVeiculos.filter(v => v.id !== idVeiculo);
-        setState(listaFiltrada);
-    }
     
     /**
      * componentDidMount: se especificado um array de dependências vazio
@@ -23,14 +17,19 @@ export default function ListagemPage()
     useEffect(() => {
         
         // me inscrever no store do redux
-        store.subscribe(() => {
+        const unsubscribe = store.subscribe(() => {
             setState(store.getState().veiculos.lista);
         });
 
         // disparar a ação de carregamento das informações
-        store.dispatch(VeiculosThunkActions.carregaVeiculos());
+        store.dispatch(VeiculosThunkActions.carregaVeiculos())
 
-    }, []);
+        // componentWillUnmount
+        return () => {
+            unsubscribe();
+        }
+
+    }, [store]);
 
     return (
         <MasterPage title="Nossos Veículos">
@@ -39,7 +38,7 @@ export default function ListagemPage()
                     <h2>Veja os nossos veículos</h2>
                 </header>
 
-                { listaVeiculos.map((veiculo, index) => <Veiculo key={index} {...veiculo} exclusaoCallback={exclusaoHandler} />) }
+                { listaVeiculos.map((veiculo, index) => <Veiculo key={index} {...veiculo} />) }
             </section>
         </MasterPage>
     );
