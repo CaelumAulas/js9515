@@ -1,37 +1,40 @@
+import { useContext, useEffect, useState } from "react";
+import { ReactReduxContext } from "react-redux";
 import MasterPage from "../../components/MasterPage/index.js";
 import { validarFormulario } from "../../lib/ValidacaoForm.js";
 import LoginService from "../../services/LoginService.js";
-import VeiculosService from "../../services/VeiculosService.js";
+import { VeiculosThunkActions } from "../../store/veiculos/index.js";
 
 export default function CadastroPage()
 {
+    const { store } = useContext(ReactReduxContext);
+    const [msgErro, setErro] = useState('');
+
+    useEffect(() => {
+
+        store.subscribe(() => {
+            setErro(store.getState().veiculos.erroCadastro)
+        });
+
+    }, [store]);
+
     const cadastroHandler = async (event) => {
         event.preventDefault();
         const campos = Array.from(event.target.elements).filter(campo => campo.name !== '');
         
-        try 
+        if (validarFormulario(campos))
         {
-            if (validarFormulario(campos))
-            {
-                const token = LoginService.getToken();
-                const dadosCadastro = new FormData(event.target);
-                dadosCadastro.append('token', token);
+            const token = LoginService.getToken();
+            const dadosCadastro = new FormData(event.target);
+            dadosCadastro.append('token', token);
 
-                await VeiculosService.cadastrar(dadosCadastro);
-
-                alert('Dados cadastrados com sucesso!');
-                event.target.reset();
-            }
-        }
-        catch(e)
-        {
-            alert(e.message);
-            console.error(e);
+            store.dispatch(VeiculosThunkActions.adicionaVeiculo(dadosCadastro));
         }
     }
 
     return (
         <MasterPage title="Cadastrar Veículo">
+            { msgErro && <div className="alert alert-danger">{msgErro}</div>}
             <form onSubmit={cadastroHandler} id="formVeiculo" method="POST" className="row">
                 <div className="form-group col-md-6">
                     <label>Marca:</label>

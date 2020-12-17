@@ -12,7 +12,7 @@ export default class VeiculosService
             throw new Error(dadosServidor.message);
         }
 
-        return true;
+        return dadosServidor;
     }
 
     static async listar()
@@ -58,6 +58,6 @@ export default class VeiculosService
             throw new Error(dadosServidor.message);
         }
 
-        return true;
+        return dadosServidor;
     }
 }

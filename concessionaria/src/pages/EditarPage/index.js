@@ -1,11 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import MasterPage from "../../components/MasterPage/index.js";
 import { validarFormulario } from "../../lib/ValidacaoForm.js";
 import LoginService from "../../services/LoginService.js";
 import VeiculosService from "../../services/VeiculosService.js";
+import { ReactReduxContext } from 'react-redux';
 
 export default function EditarPage(props)
 {
+    const { store } = useContext(ReactReduxContext);
     const formEditar = useRef();
     const params = new URLSearchParams(props.location.search);
     const id = params.get('id');
@@ -23,7 +25,12 @@ export default function EditarPage(props)
                 dadosAtualizacao.append('token', token);
                 dadosAtualizacao.append('id', id);
 
-                await VeiculosService.atualizar(dadosAtualizacao);
+                const dadosServidor = await VeiculosService.atualizar(dadosAtualizacao);
+                if (dadosServidor.status === 0) {
+                    throw new Error(dadosServidor.message);
+                }
+
+                store.dispatch({ type: 'ATUALIZA_VEICULO', payload: { veiculo: dadosServidor.veiculo }});
                 alert('Dados atualizados com sucesso!');
             }
         }
