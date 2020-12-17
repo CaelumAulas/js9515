@@ -40,7 +40,7 @@ export default function ListagemPage()
             unsubscribe();
         }
 
-    }, [store, carregarVeiculos]);
+    }, [store]);
 
     return (
         <MasterPage title="Nossos Veículos">
