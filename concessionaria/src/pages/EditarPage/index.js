@@ -41,7 +41,7 @@ export default function EditarPage(props)
         }
     }
 
-    async function carregarVeiculo()
+    async function carregarVeiculo(id)
     {
         const dadosVeiculo = await VeiculosService.getVeiculo(id);
 
@@ -55,7 +55,7 @@ export default function EditarPage(props)
 
     useEffect(() => {
         carregarVeiculo(id);
-    }, []);
+    }, [id]);
 
     return (
         <MasterPage title="Editar Veículo">

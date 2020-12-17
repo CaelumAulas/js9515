@@ -1,9 +1,5 @@
-import VeiculosService from "../../services/VeiculosService.js";
-
 const INITIAL_STATE = {
-    lista: [],
-    veiculo: null,
-    erroCadastro: ''
+    lista: []
 }
 
 export function veiculosReducer(state = INITIAL_STATE, action = {})
@@ -22,15 +18,9 @@ export function veiculosReducer(state = INITIAL_STATE, action = {})
             lista: listaFiltrada
         }
     }
-    else if (action.type === 'ADICIONA_VEICULO_SUCESSO') {
+    else if (action.type === 'ADICIONA_VEICULO') {
         return {
-            lista: [ action.payload.veiculo, ...state.lista ],
-            erroCadastro: ''
-        }
-    }
-    else if (action.type === 'ADICIONA_VEICULO_ERRO') {
-        return {
-            erroCadastro: action.payload.mensagem
+            lista: [ action.payload.veiculo, ...state.lista ]
         }
     }
 
@@ -43,46 +33,4 @@ export function veiculosReducer(state = INITIAL_STATE, action = {})
     }
 
     return state;
-}
-
-// Operações assíncronas que retornam uma ação de manipulação do state
-export class VeiculosThunkActions
-{
-    static carregaVeiculos()
-    {
-        return async function(dispatch) {
-            console.log('Carregando dados do servidor...');
-            const listaDeVeiculosServidor = await VeiculosService.listar();
-            dispatch({ type: 'CARREGA_VEICULOS', payload: { lista: listaDeVeiculosServidor }});
-        }
-    }
-
-    static adicionaVeiculo(dadosCadastro)
-    {
-        return async function(dispatch) {
-            try 
-            {
-                const dadosServidor = await VeiculosService.cadastrar(dadosCadastro);
-                if (dadosServidor.status === 0) {
-                    throw new Error(dadosServidor.message);
-                }
-
-                dispatch({ type: 'ADICIONA_VEICULO_SUCESSO', payload: { veiculo: dadosServidor.veiculo }});
-            }
-            catch(e)
-            {
-                console.log('Erro...');
-                dispatch({ type: 'ADICIONA_VEICULO_ERRO', payload: { mensagem: e.message }});
-            }
-        }
-    }
-
-    static removeVeiculo(id, token)
-    {
-        return async function(dispatch) {
-            const dadosExclusao = await VeiculosService.remover(id, token);
-            console.log(dadosExclusao);
-            dispatch({ type: 'REMOVE_VEICULO', payload: { veiculoId: id } });
-        }
-    }
 }

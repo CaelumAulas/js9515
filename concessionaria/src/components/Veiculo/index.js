@@ -3,7 +3,7 @@ import { ReactReduxContext } from "react-redux";
 import { Link } from "react-router-dom";
 import formatar from "../../lib/FormataMoeda.js";
 import LoginService from "../../services/LoginService.js";
-import { VeiculosThunkActions } from "../../store/veiculos/index.js";
+import VeiculosService from "../../services/VeiculosService.js";
 
 export default function Veiculo(props)
 {
@@ -15,7 +15,9 @@ export default function Veiculo(props)
         {
             const token = LoginService.getToken();
             const id = props.id;
-            store.dispatch(VeiculosThunkActions.removeVeiculo(id, token));
+            const dadosExclusao = await VeiculosService.remover(id, token);
+            console.log(dadosExclusao);
+            store.dispatch({ type: 'REMOVE_VEICULO', payload: { veiculoId: id } });
         }
         catch(e)
         {
